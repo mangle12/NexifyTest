@@ -27,20 +27,42 @@
             </th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in (List<UserInfos>)ViewData["Data"])
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(x => item.Name)
+                    @if (ViewData["Status"]!.ToString() == Stutus.view.ToString())
+                    {
+                        @Html.DisplayFor(x => item.Name)    
+                    }
+                    else
+                    {
+                        @*<input type="text" value = @item.Name >*@
+                        @Html.EditorFor(x => item.Name)
+                    }                    
                 </td>
                 <td>
-                    @Html.DisplayFor(x => item.DateOfBirth)
+                    @if (ViewData["Status"]!.ToString() == Stutus.view.ToString())
+                    {
+                        @Html.DisplayFor(x => item.DateOfBirth)                        
+                    }
+                    else
+                    {                        
+                        <input type="date" value = @item.DateOfBirth >                        
+                    } 
                 </td>
                 <td>
                     @Html.DisplayFor(x => item.Salary)
                 </td>
-                <td>
-                    @Html.DisplayFor(x => item.Address)
+                <td>                    
+                    @if (ViewData["Status"]!.ToString() == Stutus.view.ToString())
+                    {
+                        @Html.DisplayFor(x => item.Address)   
+                    }
+                    else
+                    {
+                        @Html.EditorFor(x => item.Address)
+                    }    
                 </td>
             </tr>
         }

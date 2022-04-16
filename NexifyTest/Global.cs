@@ -2,3 +2,4 @@
 global using NexifyTest.Models;
 global using NexifyTest.Context;
 global using Newtonsoft.Json;
+global using NexifyTest.Enums;

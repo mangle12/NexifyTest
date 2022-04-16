@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using NexifyTest.Models;
 using System.Diagnostics;
-using System.Net;
 
 namespace NexifyTest.Controllers
 {
@@ -10,18 +7,23 @@ namespace NexifyTest.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private readonly string _baseUrl;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            _baseUrl = "https://localhost:44316/api/User/";
         }
 
         public async Task<ActionResult> Index()
         {
+            ViewData["Status"] = Stutus.view.ToString();
+
             IEnumerable<UserInfos> userInfos = Enumerable.Empty<UserInfos>();
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44316/api/User/");
+                client.BaseAddress = new Uri(_baseUrl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -40,7 +42,41 @@ namespace NexifyTest.Controllers
 
             }
 
-            return View(userInfos);
+            ViewData["Data"] = userInfos;
+
+            return View();
+        }
+
+        public async Task<ActionResult> Add()
+        {
+            ViewData["Status"] = Stutus.modify.ToString();
+
+            IEnumerable<UserInfos> userInfos = Enumerable.Empty<UserInfos>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                //HTTP GET
+                var response = await client.GetAsync("Add");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    userInfos = JsonConvert.DeserializeObject<IList<UserInfos>>(data);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                }
+
+            }
+
+            ViewData["Data"] = userInfos;
+
+            return View("Index");
         }
 
 

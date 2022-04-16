@@ -19,14 +19,16 @@ namespace NexifyTest.Controllers
             return await _baseContext.UserInfos.ToListAsync();
         }
 
-        [HttpPost("Add")]
-        public async Task<List<UserInfos>> AddUserAsync(List<UserInfos> userInfos)
+        [HttpGet("Add")]
+        public async Task<List<UserInfos>> AddUserAsync()
         {
+            var userInfos = await _baseContext.UserInfos.ToListAsync();
+
             userInfos.Add(new UserInfos
             {
                 Id = Guid.NewGuid(),
                 Name = String.Empty,
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = DateTime.Now.ToString("yyyy-MM-dd"),
                 Salary = 0,
                 Address = String.Empty,
             });
