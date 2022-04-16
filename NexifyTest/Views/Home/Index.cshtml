@@ -1,0 +1,49 @@
+﻿@model IEnumerable<NexifyTest.Models.UserInfos>
+
+@{
+    ViewData["Title"] = "Nexify Test";
+}
+
+<div class="text-center">
+    <span>
+        <input type="button" value="Add" style="background-color: #008CBA;border-radius: 8px;color: white;float:left;" onclick="location.href='@Url.Action("Add", "Home")'" />
+        <input type="button" value="Save" style="background-color: #4CAF50;border-radius: 8px;color: white;float:initial" onclick="location.href='@Url.Action("Add", "Home")'" />
+        <input type="button" value="Update" style="background-color: #f44336;border-radius: 8px;color: white;float:right;" onclick="location.href='@Url.Action("Add", "Home")'" />
+    </span>
+
+    <table class="table table-bordered table-responsive table-hover">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Birthday
+            </th>
+            <th>
+                Salary
+            </th>
+            <th>
+                Address
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.DateOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.Salary)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.Address)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
