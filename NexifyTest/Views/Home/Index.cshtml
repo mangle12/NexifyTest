@@ -1,71 +1,97 @@
-﻿@model IEnumerable<NexifyTest.Models.UserInfos>
+﻿@model List<UserInfos>
 
 @{
     ViewData["Title"] = "Nexify Test";
 }
 
+
 <div class="text-center">
-    <span>
-        <input type="button" value="Add" style="background-color: #008CBA;border-radius: 8px;color: white;float:left;" onclick="location.href='@Url.Action("Add", "Home")'" />
-        <input type="button" value="Save" style="background-color: #4CAF50;border-radius: 8px;color: white;float:initial" onclick="location.href='@Url.Action("Add", "Home")'" />
-        <input type="button" value="Update" style="background-color: #f44336;border-radius: 8px;color: white;float:right;" onclick="location.href='@Url.Action("Add", "Home")'" />
-    </span>
+    @using (Html.BeginForm("Save", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-    <table class="table table-bordered table-responsive table-hover">
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Birthday
-            </th>
-            <th>
-                Salary
-            </th>
-            <th>
-                Address
-            </th>
-        </tr>
+        <span>
+            <input type="button" value="Add" style="background-color: #008CBA;border-radius: 8px;color: white;float:left;" onclick="location.href='@Url.Action("Add", "Home")'" />
+            @if (ViewData["Status"]!.ToString() == Status.view.ToString())
+            {
+                <input type="submit" value="Save" style="background-color: #4CAF50;border-radius: 8px;color: white;float:initial" disabled />
+            }
+            else
+            {
+                <input type="submit" value="Save" style="background-color: #4CAF50;border-radius: 8px;color: white;float:initial" />
+            }
 
-        @foreach (var item in (List<UserInfos>)ViewData["Data"])
-        {
+            @*@Html.ActionLink("Home","Save", Model)*@
+            <input type="button" value="Update" style="background-color: #f44336;border-radius: 8px;color: white;float:right;" onclick="location.href='@Url.Action("Index", "Home")'" />
+        </span>
+
+
+        <table class="table table-bordered table-responsive table-hover">
             <tr>
-                <td>
-                    @if (ViewData["Status"]!.ToString() == Stutus.view.ToString())
-                    {
-                        @Html.DisplayFor(x => item.Name)    
-                    }
-                    else
-                    {
-                        @*<input type="text" value = @item.Name >*@
-                        @Html.EditorFor(x => item.Name)
-                    }                    
-                </td>
-                <td>
-                    @if (ViewData["Status"]!.ToString() == Stutus.view.ToString())
-                    {
-                        @Html.DisplayFor(x => item.DateOfBirth)                        
-                    }
-                    else
-                    {                        
-                        <input type="date" value = @item.DateOfBirth >                        
-                    } 
-                </td>
-                <td>
-                    @Html.DisplayFor(x => item.Salary)
-                </td>
-                <td>                    
-                    @if (ViewData["Status"]!.ToString() == Stutus.view.ToString())
-                    {
-                        @Html.DisplayFor(x => item.Address)   
-                    }
-                    else
-                    {
-                        @Html.EditorFor(x => item.Address)
-                    }    
-                </td>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Birthday
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    Address
+                </th>
             </tr>
-        }
 
-    </table>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(x => x[i].Id, new { style = "display: none;" })
+
+                        @if (ViewData["Status"]!.ToString() == Status.view.ToString())
+                        {
+                            @Html.DisplayFor(x => x[i].Name)
+                        }
+                        else
+                        {
+                            @Html.EditorFor(x => x[i].Name)
+                        }
+                    </td>
+                    <td>
+                        @if (ViewData["Status"]!.ToString() == Status.view.ToString())
+                        {
+                            @Html.DisplayFor(x => x[i].DateOfBirth)
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(x => x[i].DateOfBirth, new { type = "date" })                            
+                        }
+                    </td>
+                    <td>
+                        @if (ViewData["Status"]!.ToString() == Status.view.ToString())
+                        {
+                            @Html.DisplayFor(x => x[i].Salary)
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(x => x[i].Salary, new { type = "range", min = 0, max = 100000})
+                        }
+                    </td>
+                    <td>
+                        @if (ViewData["Status"]!.ToString() == Status.view.ToString())
+                        {
+                            @Html.DisplayFor(x => x[i].Address)
+                        }
+                        else
+                        {                            
+                            @Html.EditorFor(x => x[i].Address)
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    }
 </div>
+
+
+

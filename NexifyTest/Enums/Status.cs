@@ -1,6 +1,6 @@
 ﻿namespace NexifyTest.Enums
 {
-    public enum Stutus
+    public enum Status
     {
         view,
         modify,
